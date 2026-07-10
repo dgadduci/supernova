@@ -1,3 +1,4 @@
+from typing import Optional
 from dataclasses import dataclass
 
 from query_llm import QueryLlm
@@ -109,16 +110,65 @@ Cuando se trate de productos, separalos por producto y cantidad (si se especific
 {self._output_struct}
 """
     
-    def query(self, message: str) :
-        self._message = message
-        self._generate_prompt()
-        query_llm = QueryLlm(prompt=self._prompt)
-        return query_llm.request_llm(message)
+    def query(self, message: str) -> Optional[dict]:
+        """
+        Procesa un mensaje para extraer sus intenciones.
 
+        Valida la entrada, genera el prompt correspondiente y consulta al LLM
+        para obtener las intents estructuradas del mensaje.
+
+        Args:
+            message: Texto a analizar (str). Debe ser no vacío.
+
+        Returns:
+            dict: Resultado de la clasificación con estructura JSON parseada.
+                Retorna None si hay errores en el procesamiento.
+
+        Raises:
+            ValueError: Si el mensaje es None o vacío.
+            TypeError: Si el mensaje no es una cadena de texto.
+        
+        Ejemplo:
+            >>> classifier = IntentClassifier()
+            >>> result = classifier.query("Quiero 2 pizzas de pepperoni")
+            # {'intents': [{'intent': 'agregar_producto', 'mensaje': '2 pizzas de pepperoni'}], ...}
+        """
+        if not isinstance(message, str):
+            raise TypeError(f"El mensaje debe ser una cadena de texto, recibido: {type(message).__name__}")
+
+        message = message.strip()
+        
+        if not message:
+            raise ValueError("El mensaje no puede estar vacío")
+
+        # Actualizar estado con validación previa
+        self._message = message
+        
+        try:
+            self._generate_prompt()
+            
+            query_llm = QueryLlm(prompt=self._prompt)
+            result = query_llm.request_llm(message)
+            
+            return result
+            
+        except Exception as e:
+            # Manejo genérico de excepciones para evitar craches en producción,
+            # idealmente registrar el error en un logger apropiado
+            print(f"Error al procesar mensaje: {e}")
+            return None
+    
 if __name__ == "__main__":
     classifier = IntentClassifier()
-    while True :
-        mensaje = input("Mensaje:")
-        intent = classifier.query(mensaje)
-        print(intent)
-    
+    while True:
+        try:
+            mensaje = input("Mensaje: ")
+            
+            # Salir si el usuario escribe 'exit'
+            if mensaje == 'exit':
+                break
+                
+            intent = classifier.query(mensaje)
+            print(intent)
+        except KeyboardInterrupt:
+            break
