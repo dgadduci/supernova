@@ -7,73 +7,36 @@ from query_llm import QueryLlm
 class IntentClassifier :
     _message : str = None
     _prompt : str = None
-    _intents = f"""
+    _intents = """
 * Si el cliente saluda = `saludo`
-
 * Si el cliente agradece = `agradecimiento`
-
 * Si el cliente se despide o da por terminada la conversación = `despedida`
-
 * Si responde afirmativamente a una pregunta previa = `respuesta_afirmativa`
-
 * Si responde negativamente a una pregunta previa = `respuesta_negativa`
-
 * Si quiere ver la carta o menú = `ver_menu`
-
 * Si consulta por un producto, precio, tamaño, variante, ingredientes o disponibilidad = `consultar_producto`
-
 * Si consulta por los medios de pago aceptados = `ver_metodos_de_pago`
-
 * Si consulta por las formas de entrega disponibles = `ver_metodos_de_entrega`
-
 * Si consulta el domicilio o ubicación del comercio = `consultar_domicilio_comercio`
-
 * Si consulta los días u horarios de atención = `consultar_horarios_comercio`
-
 * Si quiere comenzar un pedido pero todavía no indica productos = `iniciar_pedido`
-
 * Si quiere agregar uno o más productos al pedido = `agregar_producto`
-
 * Si quiere quitar uno o más productos del pedido = `quitar_producto`
-
-* Si quiere modificar la cantidad, tamaño, variante, sabor o alguna característica de un producto ya agregado, manteniendo el mismo producto base = `modificar_producto`
-
-* Si quiere sustituir un producto por otro producto distinto, se deben generar dos intents, en este orden:
-
+* Si quiere sustituir o modifiar un producto por otro producto distinto, se deben generar dos intents, en este orden:
   1. `quitar_producto`, con el producto que desea retirar.
   2. `agregar_producto`, con el nuevo producto que desea incorporar.
-
 * Si quiere eliminar todos los productos del pedido actual = `vaciar_pedido`
-
 * Si quiere agregar, modificar o eliminar una aclaración sobre un producto = `set_observacion_producto`
-
 * Si quiere agregar, modificar o eliminar una aclaración general del pedido = `set_observacion_pedido`
-
 * Si quiere consultar los productos cargados, cantidades, subtotal o resumen del pedido actual = `consultar_resumen_pedido`
-
 * Si establece o cambia la forma de entrega, como delivery, retiro en local o consumo en salón = `set_metodo_de_entrega`
-
 * Si establece o cambia el domicilio de entrega = `set_direccion_entrega`
-
 * Si establece, cambia o elimina la fecha u hora programada del pedido = `set_fecha_hora_entrega`
-
 * Si establece o cambia el medio de pago = `set_metodo_de_pago`
-
 * Si quiere confirmar y enviar definitivamente el pedido = `confirmar_pedido`
-
 * Si consulta el estado de un pedido ya confirmado = `consultar_estado_pedido`
-
 * Si quiere cancelar un pedido ya confirmado = `cancelar_pedido`
-
 * Si el mensaje no puede interpretarse con suficiente seguridad = `desconocida`
-
-Reglas adicionales para el parseo:
-
-* No generar `quitar_producto` y `agregar_producto` cuando solo cambia una característica del mismo producto.
-
-* Si cambia una pizza chica por una grande, corresponde una sola intent: `modificar_producto`.
-
-* Si cambia una pizza de mozzarella por una pizza napolitana, corresponden dos intents: primero `quitar_producto` y después `agregar_producto`.
 
 * Las intents deben conservar el orden en que deben ejecutarse.
 
