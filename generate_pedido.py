@@ -1,4 +1,4 @@
-from logica_fuzzy_pedido_productos import detectar_productos
+from backend.recognizers.logica_fuzzy_pedido_productos import detectar_productos
 import json
 
 def main():

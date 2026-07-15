@@ -1,6 +1,6 @@
 import requests
 import json
-from data.lista_json import productos
+from backend.data.lista_json import productos
 
 # Configuration Constants
 OLLAMA_URL = "http://100.113.65.40:11434/api/generate"

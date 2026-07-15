@@ -45,7 +45,7 @@
 #             }'
 # ══════════════════════════════════════════════════════════════════════════════
 
-from data.lista_json import productos as cat_prod_default
+from backend.data.lista_json import productos as cat_prod_default
 from rapidfuzz import fuzz, process
 import re
 import unicodedata

@@ -1,7 +1,7 @@
 from typing import Optional
 from dataclasses import dataclass
 
-from query_llm import QueryLlm
+from backend.llm.query_llm import QueryLlm
 
 
 @dataclass

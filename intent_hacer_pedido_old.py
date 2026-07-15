@@ -3,10 +3,10 @@ import json
 from typing import List
 
 from clases import Cliente, Comercio, Producto
-from query_llm import QueryLlm
+from backend.llm.query_llm import QueryLlm
 
 try:
-    from data.lista_json import productos as cat_prod_default
+    from backend.data.lista_json import productos as cat_prod_default
 except ImportError:
     cat_prod_default = []
 

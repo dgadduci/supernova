@@ -20,7 +20,7 @@
 #   Salida  : '{"id": 0, "descripcion": "metodo_entrega_no_seleccionado"}'
 # ══════════════════════════════════════════════════════════════════════════════
 
-from data.lista_json import metodos_entrega as metodos_default
+from backend.data.lista_json import metodos_entrega as metodos_default
 from rapidfuzz import fuzz, process
 import re
 import unicodedata

@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Productos",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "backend.recognizers.logica_fuzzy_pedido_productos",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "Métodos de pago",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "backend.recognizers.logica_fuzzy_pedido_medios_de_pago",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "Métodos de entrega",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "backend.recognizers.logica_fuzzy_pedido_metodo_de_entrega",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "intent classifier",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "backend.llm.intent_classifier",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        }
+    ]
+}

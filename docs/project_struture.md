@@ -6,8 +6,14 @@ backend/
 │   ├── config.py
 │   └── settings.py
 │
+│── recognizers/
+│   ├── logica_fuzzy_pedido_productos.py
+│   ├── logica_fuzzy_pedido_metodo_de_entrega.py
+│   ├── logica_fuzzy_pedido_medios_de_pago.py
+│
 ├── llm/
 │   ├── intent_classifier.py    # Texto libre -> JSON de intents
+|   |__ query_llm               # clase base para enviar consultas a llm
 │   ├── beauty_response.py      # JSON respuesta -> mensaje natural
 │   └── prompts/
 │       ├── intent_classifier.md

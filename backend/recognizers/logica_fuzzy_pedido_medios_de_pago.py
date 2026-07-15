@@ -34,7 +34,7 @@
 #   Salida  : {"id": 0, "descripcion": "no_seleccionado"}
 # ══════════════════════════════════════════════════════════════════════════════
 
-from data.lista_json import medios_de_pago as medios_default
+from backend.data.lista_json import medios_de_pago as medios_default
 from rapidfuzz import fuzz, process
 import re
 import unicodedata

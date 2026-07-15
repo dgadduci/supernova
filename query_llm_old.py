@@ -3,7 +3,7 @@ import json
 from dataclasses import dataclass, field
 # Asumiendo que este módulo sigue existiendo en tu entorno
 try:
-    from data.lista_json import productos as cat_prod_default
+    from backend.data.lista_json import productos as cat_prod_default
 except ImportError:
     cat_prod_default = []
 
@@ -43,7 +43,7 @@ class OllamaClassifier:
         # Opcional: Reintentar importar aquí si la carga inicial falló pero queremos ser más estrictos
         if not self.productos and hasattr(self, 'productos'):
             try:
-                from data.lista_json import productos as prod_temp
+                from backend.data.lista_json import productos as prod_temp
                 object.__setattr__(self, 'productos', prod_temp) # Forzar asignación en dataclass inmutable si fuera necesario (no es el caso aquí por default_factory)
             except ImportError:
                 print("Advertencia: No se pudo importar 'lista_json'. Usando catálogo vacío.")

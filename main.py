@@ -1,5 +1,5 @@
 from clases import Cliente, Comercio
-from intent_classifier import IntentClassifier
+from backend.llm.intent_classifier import IntentClassifier
 from intent_hacer_pedido import IntentHacerPedido
 
 
