@@ -7,7 +7,6 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Integer,
-    String,
     UniqueConstraint,
     func,
 )
@@ -16,17 +15,19 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.database.base import Base
 
 if TYPE_CHECKING:
-    from backend.models.comercio import Comercio
+    from backend.models.presentacion import Presentacion
     from backend.models.producto import Producto
+    from backend.models.producto_precio import ProductoPrecio
+    
 
-class CategoriaProducto(Base):
-    __tablename__ = "categorias_productos"
+class ProductoPresentacion(Base):
+    __tablename__ = "producto_presentaciones"
 
     __table_args__ = (
         UniqueConstraint(
-            "id_comercio",
-            "descripcion",
-            name="comercio_categoria_producto_unica",
+            "id_producto",
+            "id_presentacion",
+            name="producto_presentacion_unica",
         ),
         CheckConstraint(
             "orden >= 0",
@@ -39,21 +40,32 @@ class CategoriaProducto(Base):
         autoincrement=True,
     )
 
-    id_comercio: Mapped[int] = mapped_column(
+    id_producto: Mapped[int] = mapped_column(
         ForeignKey(
-            "comercios.id",
-            ondelete="CASCADE",
+            "productos.id",
+            ondelete="RESTRICT",
         ),
         nullable=False,
         index=True,
     )
 
-    descripcion: Mapped[str] = mapped_column(
-        String(100),
+    id_presentacion: Mapped[int] = mapped_column(
+        ForeignKey(
+            "presentaciones.id",
+            ondelete="RESTRICT",
+        ),
         nullable=False,
+        index=True,
     )
 
     activo: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=True,
+        server_default="true",
+    )
+
+    disponible: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
         default=True,
@@ -80,18 +92,25 @@ class CategoriaProducto(Base):
         onupdate=func.now(),
     )
 
-    comercio: Mapped["Comercio"] = relationship(
-        back_populates="categorias_productos",
+    producto: Mapped["Producto"] = relationship(
+        back_populates="presentaciones",
     )
 
-    productos: Mapped[list["Producto"]] = relationship(
-        back_populates="categoria",
+    presentacion: Mapped["Presentacion"] = relationship(
+        back_populates="productos",
+    )
+    
+    precios: Mapped[list["ProductoPrecio"]] = relationship(
+        back_populates="producto_presentacion",
+        order_by="ProductoPrecio.vigencia_desde",
     )
 
     def __repr__(self) -> str:
         return (
-            f"CategoriaProducto("
+            f"ProductoPresentacion("
             f"id={self.id!r}, "
-            f"id_comercio={self.id_comercio!r}, "
-            f"descripcion={self.descripcion!r})"
+            f"id_producto={self.id_producto!r}, "
+            f"id_presentacion={self.id_presentacion!r}, "
+            f"activo={self.activo!r}, "
+            f"disponible={self.disponible!r})"
         )

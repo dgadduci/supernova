@@ -17,16 +17,22 @@ from backend.database.base import Base
 
 if TYPE_CHECKING:
     from backend.models.comercio import Comercio
-    from backend.models.producto import Producto
+    from backend.models.producto_presentacion import ProductoPresentacion
 
-class CategoriaProducto(Base):
-    __tablename__ = "categorias_productos"
+
+class Presentacion(Base):
+    __tablename__ = "presentaciones"
 
     __table_args__ = (
         UniqueConstraint(
             "id_comercio",
+            "codigo",
+            name="comercio_presentacion_codigo_unico",
+        ),
+        UniqueConstraint(
+            "id_comercio",
             "descripcion",
-            name="comercio_categoria_producto_unica",
+            name="comercio_presentacion_descripcion_unica",
         ),
         CheckConstraint(
             "orden >= 0",
@@ -46,6 +52,11 @@ class CategoriaProducto(Base):
         ),
         nullable=False,
         index=True,
+    )
+
+    codigo: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
     )
 
     descripcion: Mapped[str] = mapped_column(
@@ -81,17 +92,19 @@ class CategoriaProducto(Base):
     )
 
     comercio: Mapped["Comercio"] = relationship(
-        back_populates="categorias_productos",
+        back_populates="presentaciones",
     )
 
-    productos: Mapped[list["Producto"]] = relationship(
-        back_populates="categoria",
+    productos: Mapped[list["ProductoPresentacion"]] = relationship(
+        back_populates="presentacion",
     )
 
     def __repr__(self) -> str:
         return (
-            f"CategoriaProducto("
+            "Presentacion("
             f"id={self.id!r}, "
             f"id_comercio={self.id_comercio!r}, "
-            f"descripcion={self.descripcion!r})"
+            f"codigo={self.codigo!r}, "
+            f"descripcion={self.descripcion!r}, "
+            f"activo={self.activo!r})"
         )

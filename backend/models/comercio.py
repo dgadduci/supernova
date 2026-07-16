@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from backend.models.comercio_metodo_entrega import ComercioMetodoEntrega
     from backend.models.comercio_medio_pago import ComercioMedioPago
     from backend.models.categoria_producto import CategoriaProducto
-
+    from backend.models.presentacion import Presentacion
 class EstadoComercio(str, Enum):
     PRUEBA = "prueba"
     ACTIVO = "activo"
@@ -156,6 +156,12 @@ class Comercio(Base):
     )
 
     categorias_productos: Mapped[list["CategoriaProducto"]] = relationship(
+        back_populates="comercio",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+    
+    presentaciones: Mapped[list["Presentacion"]] = relationship(
         back_populates="comercio",
         cascade="all, delete-orphan",
         passive_deletes=True,
